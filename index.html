@@ -473,30 +473,42 @@ function runLocalFilter(zoneId) {
     });
 }
 
+// ===== แก้เฉพาะฟังก์ชันนี้: Export Receive (hasImageColumn = true) จะฝังรูปจริงและเซฟเป็น .html =====
+// รายงานอื่น (Modify / Move / Asset / EOP / Scrap) ยังคงเป็น .xls เหมือนเดิมทุกประการ
 function exportTargetExcel(tableId, fileName, hasImageColumn) {
     const original = document.getElementById(tableId);
     const clone = original.cloneNode(true);
 
+    // ลบคอลัมน์ "ลบ" (ปุ่มลบแถว) ออกก่อน export เท่านั้น — ไม่แตะรูปภาพอีกต่อไป
     clone.querySelectorAll('tr').forEach(row => {
         if(row.cells.length > 0) row.deleteCell(-1);
-
-        if(hasImageColumn && row.cells.length > 1) {
-            const imgCell = row.cells[1];
-            if(imgCell.querySelector('img')) {
-                imgCell.innerHTML = "[Image Uploaded in Cloud Sheets]";
-            }
-        }
     });
 
-    const meta = `<meta charset="utf-8"><style>th, td { border:1px solid #cbd5e1; padding:8px; text-align:left; }</style>`;
-    const blob = new Blob([meta + clone.outerHTML], { type: 'application/vnd.ms-excel' });
+    // ปรับขนาดรูปให้พอดีตอนเปิดไฟล์ export (เฉพาะตารางที่มีรูป)
+    if(hasImageColumn) {
+        clone.querySelectorAll('img.table-img-preview').forEach(img => {
+            img.style.width = '60px';
+            img.style.height = '60px';
+            img.style.objectFit = 'cover';
+        });
+    }
+
+    const meta = `<meta charset="utf-8"><style>th, td { border:1px solid #cbd5e1; padding:8px; text-align:left; } img { display:block; }</style>`;
+
+    // ไฟล์ .xls ปลอม (HTML สวมนามสกุล) ใส่รูป base64 ไม่ได้จริง ๆ ในโปรแกรม Excel ส่วนใหญ่
+    // ถ้ามีรูป (hasImageColumn = true) จึงต้องเซฟเป็น .html แทน เพื่อให้เห็นรูปจริง
+    const mimeType = hasImageColumn ? 'text/html' : 'application/vnd.ms-excel';
+    const extension = hasImageColumn ? 'html' : 'xls';
+
+    const blob = new Blob([meta + clone.outerHTML], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${fileName}_2026.xls`;
+    a.download = `${fileName}_2026.${extension}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 </script>
 </body>
