@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<!-- ExcelJS: ใช้สร้างไฟล์ .xlsx จริง พร้อมฝังรูปภาพลงในเซลได้ -->
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 
 <style>
 :root {
@@ -209,7 +211,7 @@ input:focus, select:focus { outline: none; border-color: var(--cyber-blue); }
                     <div class="form-group"><label>Month</label><select class="f-mon" onchange="runLocalFilter('tab_receive')"><option value="ALL">ทุกเดือน</option><option value="01">ม.ค.</option><option value="02">ก.พ.</option><option value="03">มี.ค.</option><option value="04">เม.ย.</option><option value="05">พ.ค.</option><option value="06">มิ.ย.</option><option value="07">ก.ค.</option><option value="08">ส.ค.</option><option value="09">ก.ย.</option><option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option></select></div>
                     <div class="form-group"><label>Year</label><select class="f-yr" onchange="runLocalFilter('tab_receive')"><option value="ALL">ทุกปี</option><option value="2026">2026</option><option value="2025">2025</option></select></div>
                     <div></div>
-                    <button class="export-btn" onclick="exportTargetExcel('table_rec_data', 'Receive_Mold_Report', true)"><i class="fa-solid fa-file-excel"></i> Export Receive</button>
+                    <button class="export-btn" onclick="exportTargetExcel(this, 'table_rec_data', 'Receive_Mold_Report', true)"><i class="fa-solid fa-file-excel"></i> Export Receive</button>
                 </div>
                 <div class="table-container">
                     <table class="history-table" id="table_rec_data">
@@ -224,7 +226,7 @@ input:focus, select:focus { outline: none; border-color: var(--cyber-blue); }
                     <div class="form-group"><label>Month</label><select class="f-mon" onchange="runLocalFilter('tab_modify')"><option value="ALL">ทุกเดือน</option><option value="01">ม.ค.</option><option value="02">ก.พ.</option><option value="03">มี.ค.</option><option value="04">เม.ย.</option><option value="05">พ.ค.</option><option value="06">มิ.ย.</option><option value="07">ก.ค.</option><option value="08">ส.ค.</option><option value="09">ก.ย.</option><option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option></select></div>
                     <div class="form-group"><label>Year</label><select class="f-yr" onchange="runLocalFilter('tab_modify')"><option value="ALL">ทุกปี</option><option value="2026">2026</option><option value="2025">2025</option></select></div>
                     <div></div>
-                    <button class="export-btn" onclick="exportTargetExcel('table_mod_data', 'Modify_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Modify</button>
+                    <button class="export-btn" onclick="exportTargetExcel(this, 'table_mod_data', 'Modify_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Modify</button>
                 </div>
                 <div class="table-container"><table class="history-table" id="table_mod_data"><thead><tr><th>วันที่คีย์</th><th>Mold ID</th><th>New Item Code</th><th>Part No</th><th>Part Name</th><th>Model</th><th>Reason/ECI</th><th>ผู้บันทึก</th><th>ลบ</th></tr></thead><tbody class="tbody-hook"></tbody></table></div>
             </div>
@@ -234,7 +236,7 @@ input:focus, select:focus { outline: none; border-color: var(--cyber-blue); }
                     <div class="form-group"><label>Month</label><select class="f-mon" onchange="runLocalFilter('tab_move')"><option value="ALL">ทุกเดือน</option><option value="01">ม.ค.</option><option value="02">ก.พ.</option><option value="03">มี.ค.</option><option value="04">เม.ย.</option><option value="05">พ.ค.</option><option value="06">มิ.ย.</option><option value="07">ก.ค.</option><option value="08">ส.ค.</option><option value="09">ก.ย.</option><option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option></select></div>
                     <div class="form-group"><label>Year</label><select class="f-yr" onchange="runLocalFilter('tab_move')"><option value="ALL">ทุกปี</option><option value="2026">2026</option><option value="2025">2025</option></select></div>
                     <div></div>
-                    <button class="export-btn" onclick="exportTargetExcel('table_mov_data', 'Move_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Move</button>
+                    <button class="export-btn" onclick="exportTargetExcel(this, 'table_mov_data', 'Move_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Move</button>
                 </div>
                 <div class="table-container"><table class="history-table" id="table_mov_data"><thead><tr><th>วันที่คีย์</th><th>Mold ID</th><th>New Location พิกัดใหม่</th><th>ผู้บันทึก</th><th>ลบ</th></tr></thead><tbody class="tbody-hook"></tbody></table></div>
             </div>
@@ -244,7 +246,7 @@ input:focus, select:focus { outline: none; border-color: var(--cyber-blue); }
                     <div class="form-group"><label>Month</label><select class="f-mon" onchange="runLocalFilter('tab_asset')"><option value="ALL">ทุกเดือน</option><option value="01">ม.ค.</option><option value="02">ก.พ.</option><option value="03">มี.ค.</option><option value="04">เม.ย.</option><option value="05">พ.ค.</option><option value="06">มิ.ย.</option><option value="07">ก.ค.</option><option value="08">ส.ค.</option><option value="09">ก.ย.</option><option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option></select></div>
                     <div class="form-group"><label>Year</label><select class="f-yr" onchange="runLocalFilter('tab_asset')"><option value="ALL">ทุกปี</option><option value="2026">2026</option><option value="2025">2025</option></select></div>
                     <div></div>
-                    <button class="export-btn" onclick="exportTargetExcel('table_ast_data', 'Asset_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Asset</button>
+                    <button class="export-btn" onclick="exportTargetExcel(this, 'table_ast_data', 'Asset_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Asset</button>
                 </div>
                 <div class="table-container"><table class="history-table" id="table_ast_data"><thead><tr><th>วันที่คีย์</th><th>Mold ID</th><th>Customer Asset No</th><th>Mold Owner</th><th>ผู้บันทึก</th><th>ลบ</th></tr></thead><tbody class="tbody-hook"></tbody></table></div>
             </div>
@@ -254,7 +256,7 @@ input:focus, select:focus { outline: none; border-color: var(--cyber-blue); }
                     <div class="form-group"><label>Month</label><select class="f-mon" onchange="runLocalFilter('tab_eop')"><option value="ALL">ทุกเดือน</option><option value="01">ม.ค.</option><option value="02">ก.พ.</option><option value="03">มี.ค.</option><option value="04">เม.ย.</option><option value="05">พ.ค.</option><option value="06">มิ.ย.</option><option value="07">ก.ค.</option><option value="08">ส.ค.</option><option value="09">ก.ย.</option><option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option></select></div>
                     <div class="form-group"><label>Year</label><select class="f-yr" onchange="runLocalFilter('tab_eop')"><option value="ALL">ทุกปี</option><option value="2026">2026</option><option value="2025">2025</option></select></div>
                     <div></div>
-                    <button class="export-btn" onclick="exportTargetExcel('table_eop_data', 'EOP_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export EOP</button>
+                    <button class="export-btn" onclick="exportTargetExcel(this, 'table_eop_data', 'EOP_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export EOP</button>
                 </div>
                 <div class="table-container"><table class="history-table" id="table_eop_data"><thead><tr><th>วันที่คีย์</th><th>Mold ID</th><th>EOP Effective Date</th><th>ผู้บันทึก</th><th>ลบ</th></tr></thead><tbody class="tbody-hook"></tbody></table></div>
             </div>
@@ -264,7 +266,7 @@ input:focus, select:focus { outline: none; border-color: var(--cyber-blue); }
                     <div class="form-group"><label>Month</label><select class="f-mon" onchange="runLocalFilter('tab_scrap')"><option value="ALL">ทุกเดือน</option><option value="01">ม.ค.</option><option value="02">ก.พ.</option><option value="03">มี.ค.</option><option value="04">เม.ย.</option><option value="05">พ.ค.</option><option value="06">มิ.ย.</option><option value="07">ก.ค.</option><option value="08">ส.ค.</option><option value="09">ก.ย.</option><option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option></select></div>
                     <div class="form-group"><label>Year</label><select class="f-yr" onchange="runLocalFilter('tab_scrap')"><option value="ALL">ทุกปี</option><option value="2026">2026</option><option value="2025">2025</option></select></div>
                     <div></div>
-                    <button class="export-btn" onclick="exportTargetExcel('table_scp_data', 'Scrap_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Scrap</button>
+                    <button class="export-btn" onclick="exportTargetExcel(this, 'table_scp_data', 'Scrap_Mold_Report', false)"><i class="fa-solid fa-file-excel"></i> Export Scrap</button>
                 </div>
                 <div class="table-container"><table class="history-table" id="table_scp_data"><thead><tr><th>วันที่คีย์</th><th>Mold ID</th><th>Scrap / Return Type</th><th>Scrap Date</th><th>ผู้บันทึก</th><th>ลบ</th></tr></thead><tbody class="tbody-hook"></tbody></table></div>
             </div>
@@ -473,42 +475,89 @@ function runLocalFilter(zoneId) {
     });
 }
 
-// ===== แก้เฉพาะฟังก์ชันนี้: Export Receive (hasImageColumn = true) จะฝังรูปจริงและเซฟเป็น .html =====
-// รายงานอื่น (Modify / Move / Asset / EOP / Scrap) ยังคงเป็น .xls เหมือนเดิมทุกประการ
-function exportTargetExcel(tableId, fileName, hasImageColumn) {
-    const original = document.getElementById(tableId);
-    const clone = original.cloneNode(true);
+// ===== Export เป็นไฟล์ .xlsx จริง (ใช้ ExcelJS) พร้อมฝังรูปภาพจริงในคอลัมน์รูป (เฉพาะ Receive) =====
+async function exportTargetExcel(btn, tableId, fileName, hasImageColumn) {
+    const originalBtnHtml = btn ? btn.innerHTML : null;
+    if(btn) { btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generating .xlsx...`; }
 
-    // ลบคอลัมน์ "ลบ" (ปุ่มลบแถว) ออกก่อน export เท่านั้น — ไม่แตะรูปภาพอีกต่อไป
-    clone.querySelectorAll('tr').forEach(row => {
-        if(row.cells.length > 0) row.deleteCell(-1);
-    });
+    try {
+        const table = document.getElementById(tableId);
 
-    // ปรับขนาดรูปให้พอดีตอนเปิดไฟล์ export (เฉพาะตารางที่มีรูป)
-    if(hasImageColumn) {
-        clone.querySelectorAll('img.table-img-preview').forEach(img => {
-            img.style.width = '60px';
-            img.style.height = '60px';
-            img.style.objectFit = 'cover';
+        // ดึงหัวตาราง (ตัดคอลัมน์ "ลบ" ท้ายสุดออก)
+        const headerCells = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+        headerCells.pop();
+
+        const workbook = new ExcelJS.Workbook();
+        const safeSheetName = fileName.replace(/[\\\/\?\*\[\]:]/g, '').substring(0, 31);
+        const worksheet = workbook.addWorksheet(safeSheetName || 'Report');
+
+        worksheet.addRow(headerCells);
+        worksheet.getRow(1).font = { bold: true };
+        worksheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF1F5F9' } };
+
+        const bodyRows = Array.from(table.querySelectorAll('tbody tr'));
+        let excelRowIndex = 2; // แถวที่ 1 คือหัวตาราง
+
+        for(const tr of bodyRows) {
+            const cells = Array.from(tr.children);
+            cells.pop(); // ตัดเซลปุ่มลบท้ายแถวออก
+
+            if(hasImageColumn) {
+                // คอลัมน์รูปภาพอยู่ index ที่ 1 (วันที่คีย์ = 0, รูปภาพ = 1)
+                const imgCell = cells[1];
+                const imgEl = imgCell ? imgCell.querySelector('img') : null;
+
+                const rowValues = cells.map((td, idx) => idx === 1 ? '' : td.textContent.trim());
+                worksheet.addRow(rowValues);
+                worksheet.getRow(excelRowIndex).height = 48;
+
+                if(imgEl && imgEl.src && imgEl.src.startsWith('data:image')) {
+                    const match = imgEl.src.match(/^data:image\/(\w+);base64,(.+)$/);
+                    if(match) {
+                        let ext = match[1].toLowerCase();
+                        if(ext === 'jpg') ext = 'jpeg';
+                        // ExcelJS รองรับเฉพาะ png / jpeg / gif เท่านั้น
+                        if(['png', 'jpeg', 'gif'].includes(ext)) {
+                            try {
+                                const imageId = workbook.addImage({ base64: match[2], extension: ext });
+                                worksheet.addImage(imageId, {
+                                    tl: { col: 1, row: excelRowIndex - 1 },
+                                    ext: { width: 55, height: 55 }
+                                });
+                            } catch(imgErr) {
+                                console.error('ฝังรูปไม่สำเร็จ (แถวนี้):', imgErr);
+                            }
+                        }
+                    }
+                }
+            } else {
+                const rowValues = cells.map(td => td.textContent.trim());
+                worksheet.addRow(rowValues);
+            }
+            excelRowIndex++;
+        }
+
+        // ปรับความกว้างคอลัมน์ให้อ่านง่าย
+        worksheet.columns.forEach((col, idx) => {
+            col.width = (hasImageColumn && idx === 1) ? 10 : 20;
         });
+
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${fileName}_2026.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch(err) {
+        console.error('Export .xlsx ล้มเหลว:', err);
+        alert('สร้างไฟล์ Excel ไม่สำเร็จ กรุณาลองใหม่อีกครั้งครับ');
+    } finally {
+        if(btn) { btn.disabled = false; btn.innerHTML = originalBtnHtml; }
     }
-
-    const meta = `<meta charset="utf-8"><style>th, td { border:1px solid #cbd5e1; padding:8px; text-align:left; } img { display:block; }</style>`;
-
-    // ไฟล์ .xls ปลอม (HTML สวมนามสกุล) ใส่รูป base64 ไม่ได้จริง ๆ ในโปรแกรม Excel ส่วนใหญ่
-    // ถ้ามีรูป (hasImageColumn = true) จึงต้องเซฟเป็น .html แทน เพื่อให้เห็นรูปจริง
-    const mimeType = hasImageColumn ? 'text/html' : 'application/vnd.ms-excel';
-    const extension = hasImageColumn ? 'html' : 'xls';
-
-    const blob = new Blob([meta + clone.outerHTML], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${fileName}_2026.${extension}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
 }
 </script>
 </body>
